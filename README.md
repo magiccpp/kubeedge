@@ -12,7 +12,7 @@ nmap -p 22 192.168.2.2-100
 
 get minikube ip:
 ```
-minikube ip    #the output is 192.168.4.2
+minikube ip    #the output is 192.168.49.2
 ```
 
 initialize kubeedge
