@@ -101,23 +101,18 @@ raspberrypi    Ready    agent,edge      13h   v1.22.6-kubeedge-v1.12.1   beta.ku
 raspberrypi2   Ready    agent,edge      11h   v1.22.6-kubeedge-v1.12.1   beta.kubernetes.io/arch=arm,beta.kubernetes.io/os=linux,kubernetes.io/arch=arm,kubernetes.io/hostname=raspberrypi2,kubernetes.io/os=linux,node-role.kubernetes.io/agent=,node-role.kubernetes.io/edge=
 ```
 
-Now we can deploy the image to the edge, I have created an image which contains a convolutional neural network for image classification.
+The demo contains persistent storage, create persistent storage and persistent storage claim:
 ```
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: mnist1
-spec:
-  containers:
-  - name: mnist1
-    image: magiccpp1/mnist-arm32v7:01
-    ports:
-    - containerPort: 8080
-      hostPort: 8080
-  nodeSelector:
-    "node-role.kubernetes.io/edge": ""
-EOF
+kubectl apply -f pv.yaml
+kubectl apply -f pvc.yaml
+```
+
+
+Now we can deploy the image to the edge, I have created an image which contains a convolutional neural network for image classification.
+
+
+```
+kubectl apply -f mnist1.yaml
 ```
 
 Now you can test the model on the edge node, 
@@ -151,5 +146,8 @@ http://192.168.2.16:8001/api/v1/namespaces/kubernetes-dashboard/services/http:ku
 
 
 
-
-
+## Subscribe to MQTT message
+The demo code publish MQTT message on the topic "image_classfication", you could subscribe the topic with command:
+```
+mosquitto_sub -h 0.0.0.0 -p 1883  -t image_classification
+```
