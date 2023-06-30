@@ -48,8 +48,6 @@ sudo iptables -A FORWARD -p tcp --dport 10000 -d 192.168.49.2 -j ACCEPT
 sudo iptables -t nat -A PREROUTING -p tcp --dport 10002 -j DNAT --to-destination 192.168.49.2:10002
 sudo iptables -A FORWARD -p tcp --dport 10002 -d 192.168.49.2 -j ACCEPT
 
-sudo iptables -t nat -D PREROUTING -p tcp --dport 10002 -j DNAT --to-destination 192.168.49.2:10002
-sudo iptables -D FORWARD -p tcp --dport 10002 -d 192.168.49.2 -j ACCEPT
 ```
 get the token and we are finished with cloud side
 ```
