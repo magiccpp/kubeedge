@@ -1,5 +1,5 @@
 # Use a Python base image
-FROM arm32v7-base:01
+FROM magiccpp1/arm32v7-base:01
 
 # Set the working directory in the container
 WORKDIR /app
