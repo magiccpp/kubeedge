@@ -50,7 +50,7 @@ The installation is same as description in single node version, please see READM
 
 Note:
 - The --cloudcore-ipport for command 'keadm join' is the external-ip you got above.
-
+- On my raspbian 11 version, only keadm version 1.12.1 works. although the version in the master node is 1.14.0
 
 ## Batch deployment
 To deploy a model to hundreds of edge nodes, we need batch deployment. The batch deployment is implemented through the package 'helm'.
@@ -62,4 +62,9 @@ When above 2 files are configured properly, just issue the command
 helm install mnist-image-classification chart/
 ```
 Above will deploy the model to all nodes described in values.yaml.
+
+To uninstall:
+```
+helm uninstall mnist-image-classification
+```
 

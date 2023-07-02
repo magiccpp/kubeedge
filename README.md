@@ -104,7 +104,7 @@ raspberrypi2   Ready    agent,edge      11h   v1.22.6-kubeedge-v1.12.1   beta.ku
 
 Now we can deploy the image to the edge, I have created an image which contains a convolutional neural network for image classification.
 ```
-kubectl apply -f mnist1.yaml
+kubectl apply -f single-node/mnist1.yaml
 ```
 
 Now you can test the model on the edge node, 
@@ -151,8 +151,6 @@ curl -X POST -F "image=@./test_image.png" http://172.17.0.3:8080/predict
 
 you will see a '4' appears, that is the MQTT message received by mosquitto_sub.
 
-## Check the persistent storage
-
 
 ## Enable kubectl logs function
 On master node, issue below to disable the kubeproxy on the edge node.
@@ -165,17 +163,5 @@ nc -zv 192.168.49.2 10004
 ```
 Enable cloudStream
 
-## Batch deployment
-We can use helm to achieve batch deployment.
-Under the root directory of this repository, type:
-```
-helm install my-release ./chart/
-```
-Then you can check the status of the release:
-```
-helm ls
-NAME      	NAMESPACE	REVISION	UPDATED                                 	STATUS  	CHART         	APP VERSION
-my-release	default  	1       	2023-07-02 10:21:58.564265435 +0200 CEST	deployed	ai-chart-1.0.0	1.0.0
-```
 
 
