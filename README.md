@@ -89,6 +89,7 @@ if something is wrong on the edge, do below to reset
 ```
 sudo docker stop $(docker ps -aq) && sudo docker rm $(docker ps -aq)
 sudo rm -r /etc/kubeedge/
+sudo keadm reset
 ```
 
 ## deploy a pod 
