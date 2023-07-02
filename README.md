@@ -144,8 +144,6 @@ Starting to serve on [::]:8001
 then I can access the GUI from another computer with the IP of master node
 http://192.168.2.16:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/
 
-
-
 ## Subscribe to MQTT message
 The demo code publish MQTT message on the topic "image_classfication", on the edge node, you could subscribe the topic with command:
 ```
@@ -157,4 +155,9 @@ curl -X POST -F "image=@./test_image.png" http://172.17.0.3:8080/predict
 ```
 
 you will see a '4' appears, that is the MQTT message received by mosquitto_sub.
+
+## Check the persistent storage
+The container is ephemeral, to create a persistent storage for the edge, apply pv.yaml, pvc.yaml and mnist1.yaml.
+Every time the web server processes an image, a grayscale image will be written to the local storage /mnt/volume.
+Check if it works fine.
 
