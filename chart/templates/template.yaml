@@ -1,0 +1,66 @@
+{{- range .Values.pods }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .name }}-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/volume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}-pvc
+  namespace: kubeedge
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .name }}-pod
+  namespace: kubeedge
+spec:
+  containers:
+  - name: mnist1
+    image: magiccpp1/mnist-arm32v7:02
+    ports:
+    - containerPort: 8080
+      hostPort: 8080
+    volumeMounts:
+    - name: my-volume
+      mountPath: /app/disk
+    env:
+    - name: STORAGE_PATH
+      value: /app/disk
+    - name: MQTT_IP
+      value: 172.17.0.2
+    - name: MQTT_TOPIC
+      value: image_classification
+  tolerations:
+    - key: "node.kubernetes.io/network-unavailable"
+      operator: "Exists"
+      effect: "NoSchedule"
+  hostAliases:
+    - ip: "172.17.0.2"
+      hostnames:
+        - "mqtt"
+  nodeSelector:
+    kubernetes.io/hostname: {{ .nodeSelector }}
+  volumes:
+    - name: my-volume
+      persistentVolumeClaim:
+        claimName: {{ .name }}-pvc
+
+{{- end }}

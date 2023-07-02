@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudcore-service
+  namespace: kubeedge
+spec:
+  type: LoadBalancer
+  selector:
+    k8s-app: kubeedge
+    kubeedge: cloudcore
+  ports:
+    - name: port-10000
+      protocol: TCP
+      port: 10000
+      targetPort: 10000
+    - name: port-10002
+      protocol: TCP
+      port: 10002
+      targetPort: 10002
+
+

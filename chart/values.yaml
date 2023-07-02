@@ -1,0 +1,4 @@
+pods:
+  - name: raspberry19
+    nodeSelector: raspberrypi
+
