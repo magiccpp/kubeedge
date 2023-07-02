@@ -101,16 +101,8 @@ raspberrypi    Ready    agent,edge      13h   v1.22.6-kubeedge-v1.12.1   beta.ku
 raspberrypi2   Ready    agent,edge      11h   v1.22.6-kubeedge-v1.12.1   beta.kubernetes.io/arch=arm,beta.kubernetes.io/os=linux,kubernetes.io/arch=arm,kubernetes.io/hostname=raspberrypi2,kubernetes.io/os=linux,node-role.kubernetes.io/agent=,node-role.kubernetes.io/edge=
 ```
 
-The demo contains persistent storage, create persistent storage and persistent storage claim:
-```
-kubectl apply -f pv.yaml
-kubectl apply -f pvc.yaml
-```
-
 
 Now we can deploy the image to the edge, I have created an image which contains a convolutional neural network for image classification.
-
-
 ```
 kubectl apply -f mnist1.yaml
 ```
@@ -121,6 +113,9 @@ copy the image to the edge node and issue below command, you will see the image 
 curl -X POST -F "image=@./test_image.png" http://172.17.0.3:8080/predict
 {"class": 4}
 ```
+The container is ephemeral. Every time the web server processes an image, a grayscale image will be written to the local storage /mnt/volume.
+Check if it works fine.
+
 
 ## startup GUI
 on your master node, issue below command:
@@ -157,7 +152,30 @@ curl -X POST -F "image=@./test_image.png" http://172.17.0.3:8080/predict
 you will see a '4' appears, that is the MQTT message received by mosquitto_sub.
 
 ## Check the persistent storage
-The container is ephemeral, to create a persistent storage for the edge, apply pv.yaml, pvc.yaml and mnist1.yaml.
-Every time the web server processes an image, a grayscale image will be written to the local storage /mnt/volume.
-Check if it works fine.
+
+
+## Enable kubectl logs function
+On master node, issue below to disable the kubeproxy on the edge node.
+```
+kubectl patch daemonset kube-proxy -n kube-system -p '{"spec": {"template": {"spec": {"affinity": {"nodeAffinity": {"requiredDuringSchedulingIgnoredDuringExecution": {"nodeSelectorTerms": [{"matchExpressions": [{"key": "node-role.kubernetes.io/edge", "operator": "DoesNotExist"}]}]}}}}}}}'
+```
+Make sure you could access the port 10004 on cloud.
+```
+nc -zv 192.168.49.2 10004
+```
+Enable cloudStream
+
+## Batch deployment
+We can use helm to achieve batch deployment.
+Under the root directory of this repository, type:
+```
+helm install my-release ./chart/
+```
+Then you can check the status of the release:
+```
+helm ls
+NAME      	NAMESPACE	REVISION	UPDATED                                 	STATUS  	CHART         	APP VERSION
+my-release	default  	1       	2023-07-02 10:21:58.564265435 +0200 CEST	deployed	ai-chart-1.0.0	1.0.0
+```
+
 
