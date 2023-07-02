@@ -147,7 +147,14 @@ http://192.168.2.16:8001/api/v1/namespaces/kubernetes-dashboard/services/http:ku
 
 
 ## Subscribe to MQTT message
-The demo code publish MQTT message on the topic "image_classfication", you could subscribe the topic with command:
+The demo code publish MQTT message on the topic "image_classfication", on the edge node, you could subscribe the topic with command:
 ```
-mosquitto_sub -h 0.0.0.0 -p 1883  -t image_classification
+mosquitto_sub -h 192.168.2.19 -p 1883  -t image_classification
 ```
+Above command will wait for MQTT messages, when you send the image to the web server again:
+```
+curl -X POST -F "image=@./test_image.png" http://172.17.0.3:8080/predict
+```
+
+you will see a '4' appears, that is the MQTT message received by mosquitto_sub.
+
