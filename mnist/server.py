@@ -33,7 +33,7 @@ client.on_publish = on_publish
 
 # Connect to the broker
 client.connect(mqtt_ip, 1883)
-
+client.loop_start()
 # Load the TensorFlow Lite model
 model_path = 'mnist_model.tflite'
 interpreter = Interpreter(model_path=model_path)
