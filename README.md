@@ -87,8 +87,11 @@ it should be started.
 
 if something is wrong on the edge, do below to reset
 ```
+sudo systemctl stop edgecore
 sudo docker stop $(docker ps -aq) && sudo docker rm $(docker ps -aq)
-sudo rm -r /etc/kubeedge/
+sudo rm -rf /etc/kubeedge/
+sudo rm -rf /var/lib/kubeedge/
+sudo rm -rf /var/lib/kubelet/
 ```
 
 ## deploy a pod 
