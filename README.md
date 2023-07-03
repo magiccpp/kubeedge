@@ -168,5 +168,10 @@ Enable cloudStream
 ```
 dd if=/dev/zero of=/tmp/tempfile bs=1M count=100 conv=fdatasync,notrunc
 ```
-
+- check if the performance of the raspberry pi is throttled:
+```
+$ vcgencmd get_throttled
+throttled=0x0
+```
+Make sure the output is 'throttled=0x0' which indicates that the performance is not throttled.
 
