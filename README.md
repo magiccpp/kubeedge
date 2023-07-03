@@ -163,5 +163,10 @@ nc -zv 192.168.49.2 10004
 ```
 Enable cloudStream
 
+## Note
+- the speed of the SD card is critical, use below command to test the speed:
+```
+dd if=/dev/zero of=/tmp/tempfile bs=1M count=100 conv=fdatasync,notrunc
+```
 
 
