@@ -84,7 +84,7 @@ sudo cp keadm-v1.12.1-linux-arm/keadm/keadm /usr/local/bin/keadm
 ```
 ### start edge
 ```
-sudo keadm join --cloudcore-ipport=192.168.49.2:10000 --token=a5e8b42c28f395b978d14d391f9ec134677b0af661e9deb65a51861037b9ed82.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc5ODQ4NzF9.L6ZpkJQd5qKK_kgN04j_0MqF3okyl6Beh2s14PoegVo --kubeedge-version=v1.12.1 --cgroupdriver=systemd
+sudo keadm join --cloudcore-ipport=192.168.49.2:10000 --token=<token> --kubeedge-version=v1.12.1 --cgroupdriver=systemd --runtimetype=docker
 ```
 
 ```
