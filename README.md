@@ -17,9 +17,9 @@ minikube ip    #the output is 192.168.49.2
 
 initialize kubeedge
 ```
-wget https://github.com/kubeedge/kubeedge/releases/download/v1.12.1/keadm-v1.12.1-linux-arm.tar.gz
-tar -zxvf keadm-v1.12.1-linux-arm.tar.gz
-sudo cp keadm-v1.12.1-linux-arm/keadm/keadm /usr/local/bin/keadm
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.12.1/keadm-v1.12.1-linux-amd64.tar.gz
+tar -zxvf keadm-v1.12.1-linux-amd64.tar.gz
+sudo cp keadm-v1.12.1-linux-amd64/keadm/keadm /usr/local/bin/keadm
 
 
 sudo keadm init --advertise-address="192.168.49.2" --profile version=v1.12.1 --kube-config=${HOME}/.kube/config
