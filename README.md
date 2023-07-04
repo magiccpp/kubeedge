@@ -20,7 +20,11 @@ initialize kubeedge
 sudo keadm init –advertise-address="192.168.49.2" --profile version=v1.12.1 –kube-config=${HOME}/.kube/config
 
 #if something is wrong, reset and try again
-#sudo keadm reset –kube-config=${HOME}/.kube/config
+sudo rm -rf /etc/kubeedge
+sudo rm -rf ${HOME}/kubeedge
+sudo rm -rf ${HOME}/.kube/
+sudo keadm reset –kube-config=${HOME}/.kube/config
+
 
 # now you should see the master node status:
 
