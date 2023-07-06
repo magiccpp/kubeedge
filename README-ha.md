@@ -21,6 +21,9 @@ find the external-ip in the output. i.e. 20.240.36.190
 open 02-ha-configmap.yaml, modify 'advertiseAddress' to the external-ip you found in above step, then issue:
 ```
 kubectl create -f 02-ha-configmap.yaml
+```
+Open 03-ha-deployment.yaml, check the 'nodeSelector' to ensure that there are nodes satisfy the condition, then
+```
 kubectl create -f 03-ha-deployment.yaml
 ```
 
