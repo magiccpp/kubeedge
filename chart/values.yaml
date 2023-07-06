@@ -1,4 +1,5 @@
 pods:
-  - name: raspberry19
-    nodeSelector: raspberrypi
-
+  - name: ai-rpi1
+    nodeSelector: raspberrypi1
+  - name: ai-rpi2
+    nodeSelector: raspberrypi2
