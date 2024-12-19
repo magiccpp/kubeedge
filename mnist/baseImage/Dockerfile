@@ -1,5 +1,5 @@
 # Use a Python base image
-FROM arm32v7/python:3.8-slim-bullseye
+FROM python:3.8-slim-bullseye
 
 # Set the working directory in the container
 WORKDIR /app

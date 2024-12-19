@@ -17,12 +17,12 @@ minikube ip    #the output is 192.168.49.2
 
 initialize kubeedge
 ```
-wget https://github.com/kubeedge/kubeedge/releases/download/v1.12.1/keadm-v1.12.1-linux-amd64.tar.gz
-tar -zxvf keadm-v1.12.1-linux-amd64.tar.gz
-sudo cp keadm-v1.12.1-linux-amd64/keadm/keadm /usr/local/bin/keadm
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.19.0/keadm-v1.19.0-linux-amd64.tar.gz
+tar -zxvf keadm-v1.19.0-linux-amd64.tar.gz
+sudo cp keadm-v1.19.0-linux-amd64/keadm/keadm /usr/local/bin/keadm
 
 
-sudo keadm init --advertise-address="192.168.49.2" --profile version=v1.12.1 --kube-config=${HOME}/.kube/config
+sudo keadm init --advertise-address="192.168.49.2" --kubeedge-version=v1.19.0 --kube-config=${HOME}/.kube/config
 
 #if something is wrong, reset and try again
 sudo rm -rf /etc/kubeedge
@@ -64,27 +64,24 @@ a5e8b42c28f395b978d14d391f9ec134677b0af661e9deb65a51861037b9ed82.eyJhbGciOiJIUzI
 ```
 
 ## installation on edge node
-### install docker
+### install containerd
+### install cni
+You need to install cni plugin otherwise you will see NotReady nodes when running 'kubectl get nodes --show-labels' with below error:
 ```
-sudo apt update
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/raspbian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io
-sudo usermod -aG docker $USER
-# exit and login again.
+container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:Network plugin returns error: cni plugin not initialized
 ```
+
+run cni.sh to install cni, the cni.sh is extracted from https://github.com/kubeedge/kubeedge/blob/master/hack/lib/install.sh
 
 ### install kubeedge
 ```
-wget https://github.com/kubeedge/kubeedge/releases/download/v1.12.1/keadm-v1.12.1-linux-arm.tar.gz
-tar -zxvf keadm-v1.12.1-linux-arm.tar.gz
-sudo cp keadm-v1.12.1-linux-arm/keadm/keadm /usr/local/bin/keadm
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.19.0/keadm-v1.19.0-linux-arm.tar.gz
+tar -zxvf keadm-v1.19.0-linux-arm.tar.gz
+sudo cp keadm-v1.19.0-linux-arm/keadm/keadm /usr/local/bin/keadm
 ```
 ### start edge
 ```
-sudo keadm join --cloudcore-ipport=192.168.49.2:10000 --token=<token> --kubeedge-version=v1.12.1 --cgroupdriver=systemd --runtimetype=docker
+sudo keadm deprecated join --cloudcore-ipport=192.168.49.2:10000 --token=<token> --kubeedge-version=v1.19.0
 ```
 
 ```
@@ -108,8 +105,8 @@ from the master node I can see the 3 nodes
 kubectl get nodes --show-labels
           STATUS   ROLES           AGE   VERSION                    LABELS
 minikube       Ready    control-plane   34h   v1.26.3                    beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=minikube,kubernetes.io/os=linux,minikube.k8s.io/commit=08896fd1dc362c097c925146c4a0d0dac715ace0,minikube.k8s.io/name=minikube,minikube.k8s.io/primary=true,minikube.k8s.io/updated_at=2023_06_27T20_16_16_0700,minikube.k8s.io/version=v1.30.1,node-role.kubernetes.io/control-plane=,node.kubernetes.io/exclude-from-external-load-balancers=
-raspberrypi    Ready    agent,edge      13h   v1.22.6-kubeedge-v1.12.1   beta.kubernetes.io/arch=arm,beta.kubernetes.io/os=linux,kubernetes.io/arch=arm,kubernetes.io/hostname=raspberrypi,kubernetes.io/os=linux,node-role.kubernetes.io/agent=,node-role.kubernetes.io/edge=
-raspberrypi2   Ready    agent,edge      11h   v1.22.6-kubeedge-v1.12.1   beta.kubernetes.io/arch=arm,beta.kubernetes.io/os=linux,kubernetes.io/arch=arm,kubernetes.io/hostname=raspberrypi2,kubernetes.io/os=linux,node-role.kubernetes.io/agent=,node-role.kubernetes.io/edge=
+raspberrypi    Ready    agent,edge      13h   v1.22.6-kubeedge-v1.19.0   beta.kubernetes.io/arch=arm,beta.kubernetes.io/os=linux,kubernetes.io/arch=arm,kubernetes.io/hostname=raspberrypi,kubernetes.io/os=linux,node-role.kubernetes.io/agent=,node-role.kubernetes.io/edge=
+raspberrypi2   Ready    agent,edge      11h   v1.22.6-kubeedge-v1.19.0   beta.kubernetes.io/arch=arm,beta.kubernetes.io/os=linux,kubernetes.io/arch=arm,kubernetes.io/hostname=raspberrypi2,kubernetes.io/os=linux,node-role.kubernetes.io/agent=,node-role.kubernetes.io/edge=
 ```
 
 

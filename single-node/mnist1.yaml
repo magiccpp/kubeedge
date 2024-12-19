@@ -32,7 +32,8 @@ metadata:
 spec:
   containers:
   - name: mnist1
-    image: magiccpp1/mnist-arm32v7:02
+    image: magiccpp1/kubeedge-test-mnist:1.0.0 
+    imagePullPolicy: Always
     ports:
     - containerPort: 8080
       hostPort: 8080
@@ -55,7 +56,7 @@ spec:
       operator: "Exists"
       effect: "NoSchedule"
   nodeSelector:
-    kubernetes.io/hostname: raspberrypi1
+    kubernetes.io/hostname: ken-desktop 
   volumes:
     - name: my-volume
       persistentVolumeClaim:

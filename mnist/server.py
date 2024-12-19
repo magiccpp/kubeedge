@@ -20,20 +20,27 @@ def on_publish(client, userdata, mid):
 storage_path = os.getenv('STORAGE_PATH', '/app/disk')
 print(f'Using storage path: {storage_path}')
 
-mqtt_ip = os.getenv('MQTT_IP', '172.17.0.2')
-print(f'Using mqtt ip: {mqtt_ip}')
+mqtt_enabled = os.getenv('MQTT_ENABLE', 'FALSE')
+if mqtt_enabled == 'FALSE':
+    mqtt_enabled = False
+else:
+    mqtt_enabled = True
 
-mqtt_topic = os.getenv('MQTT_TOPIC', 'image_classification')
-print(f'Using mqtt topic: {mqtt_topic}')
+if mqtt_enabled:
+   mqtt_ip = os.getenv('MQTT_IP', '172.17.0.2')
+   print(f'Using mqtt ip: {mqtt_ip}')
 
-client = mqtt.Client()
-# Set callback functions
-client.on_connect = on_connect
-client.on_publish = on_publish
+   mqtt_topic = os.getenv('MQTT_TOPIC', 'image_classification')
+   print(f'Using mqtt topic: {mqtt_topic}')
 
-# Connect to the broker
-client.connect(mqtt_ip, 1883)
-client.loop_start()
+   client = mqtt.Client()
+   # Set callback functions
+   client.on_connect = on_connect
+   client.on_publish = on_publish
+
+   # Connect to the broker
+   client.connect(mqtt_ip, 1883)
+   client.loop_start()
 # Load the TensorFlow Lite model
 model_path = 'mnist_model.tflite'
 interpreter = Interpreter(model_path=model_path)
@@ -80,7 +87,8 @@ async def predict(request):
         image = Image.open(BytesIO(image_data))
         predicted_class = run_inference(image)
         message = str(predicted_class)
-        client.publish(mqtt_topic, message)
+        if mqtt_enabled:
+           client.publish(mqtt_topic, message)
         # Send the predicted class back to the client
         return web.json_response({'class': predicted_class})
     except Exception as e:
