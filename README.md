@@ -161,6 +161,12 @@ you will see a '4' appears, that is the MQTT message received by mosquitto_sub.
 
 
 ## Enable kubectl logs function
+Follow the guide carefully:
+https://kubeedge.io/docs/setup/install-with-keadm
+
+make sure the report port on the cloud is accessible from the edge, i.e. 192.168.49.2:10004, check /etc/kubeedge/config/edgecore.yaml!
+
+
 On master node, issue below to disable the kubeproxy on the edge node.
 ```
 kubectl patch daemonset kube-proxy -n kube-system -p '{"spec": {"template": {"spec": {"affinity": {"nodeAffinity": {"requiredDuringSchedulingIgnoredDuringExecution": {"nodeSelectorTerms": [{"matchExpressions": [{"key": "node-role.kubernetes.io/edge", "operator": "DoesNotExist"}]}]}}}}}}}'
@@ -169,7 +175,18 @@ Make sure you could access the port 10004 on cloud.
 ```
 nc -zv 192.168.49.2 10004
 ```
-Enable cloudStream
+
+## Enable metric server
+follow:
+https://kubeedge.io/docs/advanced/metrics
+
+After setting it up you should see the CPU/Memory usage
+```
+kubectl top node
+NAME          CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+ken-desktop   303m         7%     1990Mi          51%
+minikube      192m         4%     840Mi           5%
+```
 
 ## Note
 - the speed of the SD card is critical, use below command to test the speed:
