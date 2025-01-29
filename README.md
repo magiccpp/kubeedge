@@ -74,6 +74,7 @@ a5e8b42c28f395b978d14d391f9ec134677b0af661e9deb65a51861037b9ed82.eyJhbGciOiJIUzI
 ```
 
 ## installation on edge node
+Note: you can run the edge node inside Ubuntu 22 docker container, and a containerd inside the docker container. in this case, you have to run your docker container with parameter --privileged
 ### install containerd
 ### install cni
 You need to install cni plugin otherwise you will see NotReady nodes when running 'kubectl get nodes --show-labels' with below error:
