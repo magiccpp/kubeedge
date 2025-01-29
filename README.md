@@ -23,6 +23,7 @@ sudo cp keadm-v1.19.0-linux-amd64/keadm/keadm /usr/local/bin/keadm
 
 
 sudo keadm init --advertise-address="192.168.49.2" --kubeedge-version=v1.19.0 --kube-config=${HOME}/.kube/config
+# Note! if you are behind a proxy, you must use sudo -E to pass your environment variables, i.e. HTTP_PROXY, HTTPS_PROXY,etc to the command!
 
 #if something is wrong, reset and try again
 sudo rm -rf /etc/kubeedge
