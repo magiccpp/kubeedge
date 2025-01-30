@@ -74,7 +74,7 @@ a5e8b42c28f395b978d14d391f9ec134677b0af661e9deb65a51861037b9ed82.eyJhbGciOiJIUzI
 ```
 
 ## installation on edge node
-Note: you can run the edge node inside virtualbox, set the network to NAT.
+Note: you can run the edge node inside virtualbox, set the network to NAT. If you are using your company's computer, you may need to copy the certificates under /usr/local/shared/ca-certificates, and then run "sudo update-ca-certificates".
 ### install containerd
 ### install crictl
 ```
