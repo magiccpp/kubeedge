@@ -64,8 +64,8 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 10004 -j DNAT --to-destination
 sudo iptables -A FORWARD -p tcp --dport 10004 -d 192.168.49.2 -j ACCEPT
 
 # the dashboard front end:
-sudo iptables -t nat -A PREROUTING -p tcp --dport 10004 -j DNAT --to-destination 192.168.49.2:10004
-sudo iptables -A FORWARD -p tcp --dport 10004 -d 192.168.49.2 -j ACCEPT
+sudo iptables -t nat -A PREROUTING -p tcp --dport 10004 -j DNAT --to-destination 192.168.49.2:32000
+sudo iptables -A FORWARD -p tcp --dport 32000 -d 192.168.49.2 -j ACCEPT
 
 sudo iptables -t nat -A PREROUTING -p tcp --dport 30428 -j DNAT --to-destination 192.168.49.2:30428
 sudo iptables -A FORWARD -p tcp --dport 30428 -d 192.168.49.2 -j ACCEPT
