@@ -76,6 +76,22 @@ a5e8b42c28f395b978d14d391f9ec134677b0af661e9deb65a51861037b9ed82.eyJhbGciOiJIUzI
 Install dashboard:
 https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
 
+expose the port:
+```
+kubectl patch svc kubernetes-dashboard-web -n kubernetes-dashboard -p '{
+  "spec": {
+    "type": "NodePort",
+    "ports": [
+      {
+        "port": 8000,
+        "targetPort": 8000,
+        "protocol": "TCP",
+        "nodePort": 32000
+      }
+    ]
+  }
+}'
+```
 ## installation on edge node
 Note: you can run the edge node inside virtualbox, set the network to NAT. If you are using your company's computer, you may need to copy the certificates under /usr/local/shared/ca-certificates, and then run "sudo update-ca-certificates".
 ### install containerd
