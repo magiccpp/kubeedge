@@ -1,5 +1,5 @@
 # Use a Python base image
-FROM magiccpp1/kubeedge-test-base:1.0.0
+FROM magiccpp1/kubeedge-test-base:2.0.0
 
 # Set the working directory in the container
 WORKDIR /app
