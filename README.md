@@ -223,6 +223,8 @@ Make sure you could access the port 10004 on cloud.
 nc -zv 192.168.49.2 10004
 ```
 
+If you cannot find /etc/kubeedge/config directory on the server, ignore it. 
+
 ## Enable metric server
 follow:
 https://kubeedge.io/docs/advanced/metrics
