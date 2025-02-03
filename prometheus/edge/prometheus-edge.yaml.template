@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-edge-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    remote_write:
+      - url: "http://${KUBEEDGE_EXPOSED_IP}:30428/api/v1/write"
+
+    scrape_configs:
+      - job_name: 'ai-application'
+        static_configs:
+          - targets: ['localhost:8080']
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-edge-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/prometheus
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-edge-pvc
+  namespace: monitoring
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-edge
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      hostNetwork: true  # Add this line
+      containers:
+      - name: prometheus
+        image: prom/prometheus:latest
+        args:
+          - "--config.file=/etc/prometheus/prometheus.yml"
+          - "--storage.tsdb.path=/prometheus"
+        ports:
+          - containerPort: 9090
+            hostPort: 9090
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/prometheus
+          - name: storage-volume
+            mountPath: /prometheus
+      nodeSelector:
+        kubernetes.io/hostname: ken-desktop
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-edge-config
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: prometheus-edge-pvc
