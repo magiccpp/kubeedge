@@ -1,0 +1,52 @@
+# promethues-values.yaml
+
+# Label minikube node for scheduling
+#server:
+  #  nodeSelector:
+  #  prometheus: "true"
+server:
+  nodeSelector:
+    prometheus: "true"
+  # Additional Scrape Configurations
+
+
+
+
+# Use node affinity and tolerations to deploy on all nodes
+alertmanager:
+  nodeSelector:
+    prometheus: "true"
+
+prometheus-pushgateway:
+  enabled: false
+
+# Disable kube-state-metrics
+kube-state-metrics:
+  nodeSelector:
+    prometheus: "true"
+
+# Disable node-exporter
+prometheus-node-exporter:
+  nodeSelector:
+    prometheus: "true"
+
+
+# Add VictoriaMetrics as a scrape target
+extraScrapeConfigs: |
+  - job_name: 'victoriametrics'
+    static_configs:
+      - targets: ['victoriametrics.monitoring.svc.cluster.local:8428']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+
+  - job_name: 'federate'
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{__name__=~".+"}'  # Adjust this to match specific metrics if needed
+    static_configs:
+      - targets: ['victoriametrics.monitoring.svc.cluster.local:8428']
+    scrape_interval: 15s
+    scrape_timeout: 10s

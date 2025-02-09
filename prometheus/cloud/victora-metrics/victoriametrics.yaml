@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: victoriametrics
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: victoriametrics
+  template:
+    metadata:
+      labels:
+        app: victoriametrics
+    spec:
+      nodeSelector:
+        prometheus: "true"
+      containers:
+      - name: victoriametrics
+        image: victoriametrics/victoria-metrics
+        args:
+          - "-storageDataPath=/storage"
+          - "-retentionPeriod=2d"  # Adjust as needed, this is just for temporary storage
+        ports:
+        - containerPort: 8428
+        volumeMounts:
+        - name: storage
+          mountPath: /storage
+      volumes:
+      - name: storage
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: victoriametrics
+  namespace: monitoring
+spec:
+  type: NodePort
+  selector:
+    app: victoriametrics
+  ports:
+    - port: 8428
+      targetPort: 8428
+      nodePort: 30428  # You can specify a specific nodePort or let Kubernetes assign one
+

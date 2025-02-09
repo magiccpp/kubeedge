@@ -1,0 +1,32 @@
+# grafana-values.yaml
+
+nodeSelector:
+  grafana: "true"
+
+service:
+  type: NodePort
+  port: 3000 
+  targetPort: 3000
+  nodePort: 32000 # You can choose any available port between 30000-32767
+
+# Optional: Define other configurations as needed
+replicaCount: 1
+
+adminPassword: "YourSecurePassword"
+
+persistence:
+  enabled: true
+  storageClassName: "standard"
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "250m"
+
+
