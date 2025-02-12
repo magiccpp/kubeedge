@@ -128,7 +128,7 @@ sudo cp keadm-v1.19.0-linux-arm/keadm/keadm /usr/local/bin/keadm
 ```
 ### start edge
 ```
-sudo keadm deprecated join --cloudcore-ipport=192.168.49.2:10000 --token=<token> --kubeedge-version=v1.19.0
+sudo keadm deprecated join --cloudcore-ipport=192.168.49.2:10000 --token=<token> --kubeedge-version=1.19.0
 ```
 
 ```
@@ -144,6 +144,7 @@ sudo docker stop $(docker ps -aq) && sudo docker rm $(docker ps -aq)
 sudo rm -rf /etc/kubeedge/
 sudo rm -rf /var/lib/kubeedge/
 sudo rm -rf /var/lib/kubelet/
+sudo rm -rf /etc/systemd/system/edgecore.service
 ```
 
 ## deploy a pod 
