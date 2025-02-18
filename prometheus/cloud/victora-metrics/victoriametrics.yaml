@@ -15,7 +15,7 @@ spec:
         app: victoriametrics
     spec:
       nodeSelector:
-        prometheus: "true"
+        node-role.kubernetes.io/control-plane: ""
       containers:
       - name: victoriametrics
         image: victoriametrics/victoria-metrics

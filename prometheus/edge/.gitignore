@@ -1,0 +1,2 @@
+*.yaml
+!prometheus-edge.yaml.template

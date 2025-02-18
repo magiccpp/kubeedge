@@ -6,7 +6,7 @@
   #  prometheus: "true"
 server:
   nodeSelector:
-    prometheus: "true"
+    node-role.kubernetes.io/control-plane: ""
   # Additional Scrape Configurations
 
 
@@ -15,7 +15,7 @@ server:
 # Use node affinity and tolerations to deploy on all nodes
 alertmanager:
   nodeSelector:
-    prometheus: "true"
+    node-role.kubernetes.io/control-plane: ""
 
 prometheus-pushgateway:
   enabled: false
@@ -23,12 +23,12 @@ prometheus-pushgateway:
 # Disable kube-state-metrics
 kube-state-metrics:
   nodeSelector:
-    prometheus: "true"
+    node-role.kubernetes.io/control-plane: ""
 
 # Disable node-exporter
 prometheus-node-exporter:
   nodeSelector:
-    prometheus: "true"
+    node-role.kubernetes.io/control-plane: ""
 
 
 # Add VictoriaMetrics as a scrape target
