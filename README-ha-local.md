@@ -1,7 +1,24 @@
-sudo kubeadm init --apiserver-advertise-address=192.168.2.60
+1. install kubeadm...
+   https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+2. setup containerd with /etc/containerd/config.toml
+```
+[plugins."io.containerd.grpc.v1.cri"]
+  sandbox_image = "registry.k8s.io/pause:3.10"
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+      SystemdCgroup = true
+```
+
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+3. sudo kubeadm init --apiserver-advertise-address=192.168.2.60
+
+
 sudo kubeadm reset -f
 sudo systemctl stop kubelet
 sudo systemctl disable kubelet
+
 
 
 Your Kubernetes control-plane has initialized successfully!
@@ -27,3 +44,5 @@ kubeadm join 192.168.2.60:6443 --token 5iumd6.anuburarkpk0iskr \
 
 
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+
